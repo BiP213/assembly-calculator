@@ -4,7 +4,7 @@ x: .asciiz "Digite o primeiro valor: " # armazena a string do primeiro valor
 y: .asciiz "Digite o segundo valor: " # armazena a string do segundo valor
 resultado: .asciiz "Resultado: "  # armazena a string do resultado da operação
 menu: .asciiz "Selecione uma opção (1-soma, 2-subtração, 3-multiplicação, 4-divisão, 5-raiz): " # armazena a string de opções
-mraiz: .asciiz "Insira o número a ser calculada a raiz quadrada:"
+mraiz: .asciiz "Digite o número a ser calculada a raiz quadrada: "
 resultadoa: .asciiz "Resultado está entre "
 e: .asciiz " e "
 
@@ -127,69 +127,64 @@ syscall # executa a chamada de sistema
 
 ##################################
 
-.macro raiz #macro raiz
-la $a0,mraiz #armazena mraiz em $a0
-li $v0,4 #chamda de sistema para imprimir a string contida em $a0
+.macro raiz # macro da raiz quadrada
+la $a0,mraiz # armazena mraiz em $a0
+li $v0,4 # chamada de sistema para exibir a string contida em $a0
 syscall # executa a chamada de sistema
 
-li $v0,5 #chamada de sistema para ler um inteiro
+li $v0,5 # chamada de sistema para ler um inteiro
 syscall # executa a chamada de sistema
-move $t0,$v0 #mover o valor inserido em $v0 para $t0
+move $t0,$v0 # move o valor inserido em $v0 para $t0
 
-li $t1,1 #define $t1 como 1
-li $t2,1 #define $t2 como 1
-
-
-main: #label main
-mul $t3,$t2,$t1 #multiplica $t2 com $t2 e armazena em $t3 
-
-bgt $t3,$t0,maior #se $t3 é maior do que $t0,pule para o label maior.
-bne $t3,$t0,nao #se %t3 não é igual a $t0,pule para o label nao
+li $t1,1 # define $t1 como 1
+li $t2,1 # define $t2 como 1
 
 
+main: # label main
+mul $t3,$t2,$t1 # multiplica $t2 com $t2 e armazena em $t3 
 
-r: #label r
-la $a0,resultado #armazenar resultado em $a0
-li $v0,4 #chamda de sistema para imprimir a string contida em $a0
+bgt $t3,$t0,maior # se $t3 for maior do que $t0, pula para a label maior.
+bne $t3,$t0,nao # se %t3 não for igual a $t0, pula para a label nao
+
+
+
+r: # label r
+la $a0,resultado # armazena resultado em $a0
+li $v0,4 # chamada de sistema para exibir a string contida em $a0
 syscall # executa a chamada de sistema
-move $a0,$t2 #mover o valor contido em $t2 para $a0
-li $v0,1 #chamda de sistema para imprimir um inteiro
+move $a0,$t2 # move o valor contido em $t2 para $a0
+li $v0,1 # chamada de sistema para exibir um inteiro
 syscall # executa a chamada de sistema
-li $v0,10 #chamda de sistema para encerar o promgrama 
-syscall # executa a chamada de sistema
-
-
-
-maior: #label maior
-la $a0,resultadoa #armazena resultadoa em $a0
-li $v0,4 #chamada de sistema para imprimir a string contida de $a0
-syscall # executa a chamada de sistema
-
-sub $t3,$t2,1 #subtrai $t2 por 1 e armazena em $t3
-move $a0,$t3 #move o valor de $te para $a0
-li $v0,1 #chamada de sistema para imprimir o valor contido em $a0
-syscall # executa a chamada de sistema
-
-la $a0,e #armazena em $a0 a string contidade em 'e'
-li $v0,4 #chamada de sistema para imprimir a string contidade em $a0
-syscall # executa a chamada de sistema
-
-move $a0,$t2 #mover o valor contido em $t2 para $a0
-li $v0,1 #chamada de sistema para imprimir o valor contido em $a0
+li $v0,10 # chamada de sistema para encerar o programa 
 syscall # executa a chamada de sistema
 
 
 
-
-
-li $v0,10 #chamada de sistema para encerrar o programa
+maior: # label maior
+la $a0,resultadoa # armazena resultadoa em $a0
+li $v0,4 # chamada de sistema para exibir a string contida de $a0
 syscall # executa a chamada de sistema
 
-nao: #label nao
+sub $t3,$t2,1 # subtrai $t2 por 1 e armazena em $t3
+move $a0,$t3 # move o valor de $te para $a0
+li $v0,1 # chamada de sistema para exibir o valor contido em $a0
+syscall # executa a chamada de sistema
 
-add $t1,$t1,1 #incrementar 1 em $t1
-add $t2,$t2,1 #incrementar 1 em $t2
-j main #voltar para o label main
+la $a0,e # armazena em $a0 a string contidade em 'e'
+li $v0,4 # chamada de sistema para exibir a string contida em $a0
+syscall # executa a chamada de sistema
+
+move $a0,$t2 # move o valor contido em $t2 para $a0
+li $v0,1 # chamada de sistema para exibir o valor contido em $a0
+syscall # executa a chamada de sistema
+li $v0,10 # chamada de sistema para encerrar o programa
+syscall # executa a chamada de sistema
+
+nao: # label nao
+
+add $t1,$t1,1 # incrementa 1 em $t1
+add $t2,$t2,1 # incrementa 1 em $t2
+j main # pula para a label main
 .end_macro
 
 ##################################
@@ -208,7 +203,7 @@ beq $t0,1,soma # se $t0 for igual a 1, pula para a label soma, se não, segue o 
 beq $t0,2,subtracao # se $t0 for igual a 2, pula para a label subtracao
 beq $t0,3,multiplicacao # se $t0 for igual a 3, pula para a label multiplicacao
 beq $t0,4,divisao # se $t0 for igual a 4, pula para a label divisao
-beq $t0,5,raiz # se $t0 for igual a 4, pula para a label raiz
+beq $t0,5,raiz # se $t0 for igual a 5, pula para a label raiz
 
 li $v0,10 # chamada de sistema que encerra o programa
 syscall # executa a chamada de sistema
@@ -234,6 +229,6 @@ li $v0,10 # chamada de sistema que encerra o programa
 syscall # executa a chamada de sistema
 
 raiz:
-raiz # chama a macro divisao
+raiz # chama a macro raiz
 li $v0,10 # chamada de sistema que encerra o programa
 syscall # executa a chamada de sistema
